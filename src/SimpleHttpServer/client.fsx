@@ -17,6 +17,9 @@ module Client =
     let post = createRequest baseUrl Post
     let put = createRequest baseUrl Put
 
-    let askHello() = get "/" |> getResponse
+    let askHello (ip:string) = 
+        get "/" 
+        |> HttpClient.withQueryStringItem { name = "fake_ip_addr"; value = ip }
+        |> getResponse
 
-Client.askHello()
+Client.askHello "192.168.1.1"

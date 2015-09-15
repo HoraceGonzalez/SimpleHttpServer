@@ -26,8 +26,12 @@ module WebServer =
 
     let private app =
         setHeader "Content-Type" "text/plain"
-        >>= choose [ request(fun r -> 
-                        let valid = rateLimiter.IsValidRequest("", DateTime.Now)
+        >>= choose [ request(fun r ->
+                        let valid = 
+                            match r.queryParam "fake_ip_addr" with
+                            | Choice1Of2 (ip) -> rateLimiter.IsValidRequest("", DateTime.Now)
+                            | _ -> false
+
                         if valid
                             then never
                             else ServerErrors.SERVICE_UNAVAILABLE "Please wait before submitting another request")
