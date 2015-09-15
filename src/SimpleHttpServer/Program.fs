@@ -29,7 +29,7 @@ module WebServer =
         >>= choose [ request(fun r ->
                         let valid = 
                             match r.queryParam "fake_ip_addr" with
-                            | Choice1Of2 (ip) -> rateLimiter.IsValidRequest("", DateTime.Now)
+                            | Choice1Of2 (ip) -> rateLimiter.IsValidRequest(ip, DateTime.Now)
                             | _ -> false
 
                         if valid
